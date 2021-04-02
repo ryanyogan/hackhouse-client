@@ -1,5 +1,5 @@
 import React from "react";
-import { server, useMutation, useQuery } from "../../lib/api";
+import { useMutation, useQuery } from "../../lib/api";
 import {
   DeleteListingData,
   DeleteListingVariables,
