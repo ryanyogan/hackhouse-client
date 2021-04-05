@@ -4,8 +4,16 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import reportWebVitals from "./reportWebVitals";
 import "./styles/index.css";
-import { Home, Listing, User, NotFound, LogIn, Listings } from "./sections";
-import { Layout } from "antd";
+import {
+  Home,
+  Listing,
+  User,
+  NotFound,
+  LogIn,
+  Listings,
+  AppHeader,
+} from "./sections";
+import { Affix, Layout } from "antd";
 import { Viewer } from "./lib/types";
 
 const client = new ApolloClient({
@@ -26,6 +34,9 @@ const App = () => {
   return (
     <Router>
       <Layout id="app">
+        <Affix offsetTop={0} className="app__affix-header">
+          <AppHeader />
+        </Affix>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route
