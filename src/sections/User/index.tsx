@@ -9,6 +9,7 @@ import {
 import { Col, Layout, Row } from "antd";
 import { UserProfile } from "./components";
 import { Viewer } from "../../lib/types";
+import { ErrorBanner, PageSkeleton } from "../../lib/components";
 
 const { Content } = Layout;
 
@@ -31,6 +32,23 @@ export const User = ({
       },
     }
   );
+
+  if (loading) {
+    return (
+      <Content className="user">
+        <PageSkeleton />
+      </Content>
+    );
+  }
+
+  if (error) {
+    return (
+      <Content className="user">
+        <ErrorBanner description="This user may not exist or an error has occurred.  Please try again." />
+        <PageSkeleton />
+      </Content>
+    );
+  }
 
   const user = data?.user ?? null;
   const viewerIsUser = viewer.id === match.params.id;
