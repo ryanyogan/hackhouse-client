@@ -8,7 +8,11 @@ import {
 import { RouteComponentProps } from "react-router";
 import { Col, Layout, Row } from "antd";
 import { ErrorBanner, PageSkeleton } from "../../lib/components";
-import { ListingBookings, ListingDetials } from "./components";
+import {
+  ListingBookings,
+  ListingCreateBooking,
+  ListingDetials,
+} from "./components";
 import { mockListingBookings } from "./mocks";
 
 interface MatchParams {
@@ -72,6 +76,9 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
         <Col xs={24} lg={14}>
           {listingDetailsElement}
           {listingBookingsElement}
+        </Col>
+        <Col xs={24} lg={10}>
+          <ListingCreateBooking />
         </Col>
       </Row>
     </Content>
