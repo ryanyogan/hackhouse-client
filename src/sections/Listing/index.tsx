@@ -14,6 +14,7 @@ import {
   ListingDetials,
 } from "./components";
 import { mockListingBookings } from "./mocks";
+import { Moment } from "moment";
 
 interface MatchParams {
   id: string;
@@ -24,6 +25,8 @@ const PAGE_LIMIT = 3;
 
 export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
   const [bookingsPage, setBookingsPage] = useState(1);
+  const [checkInDate, setCheckInDate] = useState<Moment | null>(null);
+  const [checkOutDate, setCheckOutDate] = useState<Moment | null>(null);
 
   const { loading, data, error } = useQuery<ListingData, ListingVariables>(
     LISTING_QUERY,
@@ -70,6 +73,16 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
     />
   ) : null;
 
+  const listingCreateBookingElement = listing ? (
+    <ListingCreateBooking
+      price={listing.price}
+      checkInDate={checkInDate}
+      checkOutDate={checkOutDate}
+      setCheckInDate={setCheckInDate}
+      setCheckOutDate={setCheckOutDate}
+    />
+  ) : null;
+
   return (
     <Content className="listings">
       <Row gutter={24} type="flex" justify="space-between">
@@ -78,7 +91,7 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
           {listingBookingsElement}
         </Col>
         <Col xs={24} lg={10}>
-          <ListingCreateBooking />
+          {listingCreateBookingElement}
         </Col>
       </Row>
     </Content>
