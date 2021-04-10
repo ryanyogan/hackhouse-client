@@ -86,8 +86,16 @@ export const User = ({
     />
   ) : null;
 
+  const stripeError = new URL(window.location.href).searchParams.get(
+    "stripe_error"
+  );
+  const stripeErrorBanner = stripeError ? (
+    <ErrorBanner description="We had an issue connecting with Stripe.  Please try again." />
+  ) : null;
+
   return (
     <Content className="user">
+      {stripeErrorBanner}
       <Row gutter={12} type="flex" justify="space-between">
         <Col xs={24}>{userProfileElement}</Col>
         <Col xs={24}>

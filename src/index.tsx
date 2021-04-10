@@ -6,7 +6,9 @@ import {
   ApolloClient,
   InMemoryCache,
   useMutation,
+  createHttpLink,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import reportWebVitals from "./reportWebVitals";
 import "./styles/index.css";
 import {
@@ -17,6 +19,7 @@ import {
   LogIn,
   Listings,
   AppHeader,
+  Stripe,
 } from "./sections";
 import { Affix, Layout, Spin } from "antd";
 import { Viewer } from "./lib/types";
@@ -27,14 +30,25 @@ import {
 import { LOG_IN } from "./lib/graphql/mutations/LogIn";
 import { AppHeaderSkeleton, ErrorBanner } from "./lib/components";
 
-const token = sessionStorage.getItem("token");
+const httpLink = createHttpLink({
+  uri: "/api",
+  credentials: "same-origin",
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("token");
+
+  return {
+    headers: {
+      ...headers,
+      "X-CSRF-TOKEN": token ? token : "",
+    },
+  };
+});
 
 const client = new ApolloClient({
-  uri: "/api",
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
-  headers: {
-    "X-CSRF-TOKEN": token || "",
-  },
 });
 
 const initialViewer: Viewer = {
@@ -53,9 +67,9 @@ const App = () => {
         setViewer(data.logIn);
 
         if (data.logIn.token) {
-          sessionStorage.setItem("token", data.logIn.token);
+          localStorage.setItem("token", data.logIn.token);
         } else {
-          sessionStorage.removeItem("token");
+          localStorage.removeItem("token");
         }
       }
     },
@@ -103,6 +117,13 @@ const App = () => {
             exact
             path="/user/:id"
             render={(props) => <User {...props} viewer={viewer} />}
+          />
+          <Route
+            exact
+            path="/stripe"
+            render={(props) => (
+              <Stripe {...props} viewer={viewer} setViewer={setViewer} />
+            )}
           />
           <Route component={NotFound} />
         </Switch>

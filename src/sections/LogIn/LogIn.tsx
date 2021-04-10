@@ -33,7 +33,7 @@ export const LogIn = ({ setViewer }: Props) => {
     onCompleted: (data) => {
       if (data && data.logIn && data.logIn.token) {
         setViewer(data.logIn);
-        sessionStorage.setItem("token", data.logIn.token);
+        localStorage.setItem("token", data.logIn.token);
         displaySuccessNotification("You've successfully logged in!");
       }
     },
