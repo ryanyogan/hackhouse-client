@@ -20,6 +20,7 @@ import {
   Listings,
   AppHeader,
   Stripe,
+  WrappedHost as Host,
 } from "./sections";
 import { Affix, Layout, Spin } from "antd";
 import { Viewer } from "./lib/types";
@@ -110,7 +111,11 @@ const App = () => {
             path="/login"
             render={(props) => <LogIn {...props} setViewer={setViewer} />}
           />
-          <Route exact path="/host" component={Home} />
+          <Route
+            exact
+            path="/host"
+            render={(props) => <Host {...props} viewer={viewer} />}
+          />
           <Route exact path="/listing/:id" component={Listing} />
           <Route exact path="/listings/:location?" component={Listings} />
           <Route
