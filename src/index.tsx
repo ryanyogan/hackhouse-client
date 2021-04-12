@@ -30,6 +30,8 @@ import {
 } from "./lib/graphql/mutations/LogIn/__generated__/LogIn";
 import { LOG_IN } from "./lib/graphql/mutations/LogIn";
 import { AppHeaderSkeleton, ErrorBanner } from "./lib/components";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
 const httpLink = createHttpLink({
   uri: "/api",
@@ -59,6 +61,8 @@ const initialViewer: Viewer = {
   hasWallet: null,
   didRequest: false,
 };
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY as string);
 
 const App = () => {
   const [viewer, setViewer] = useState<Viewer>(initialViewer);
@@ -119,7 +123,11 @@ const App = () => {
           <Route
             exact
             path="/listing/:id"
-            render={(props) => <Listing {...props} viewer={viewer} />}
+            render={(props) => (
+              <Elements stripe={stripePromise}>
+                <Listing {...props} viewer={viewer} />
+              </Elements>
+            )}
           />
           <Route exact path="/listings/:location?" component={Listings} />
           <Route
