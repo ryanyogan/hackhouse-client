@@ -14,7 +14,6 @@ import {
   ListingCreateBookingModal,
   ListingDetials,
 } from "./components";
-import { mockListingBookings } from "./mocks";
 import { Moment } from "moment";
 import { Viewer } from "../../lib/types";
 
@@ -38,16 +37,16 @@ export const Listing = ({
   const [checkOutDate, setCheckOutDate] = useState<Moment | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const { loading, data, error } = useQuery<ListingData, ListingVariables>(
-    LISTING_QUERY,
-    {
-      variables: {
-        id: match.params.id,
-        bookingsPage,
-        limit: PAGE_LIMIT,
-      },
-    }
-  );
+  const { loading, data, error, refetch } = useQuery<
+    ListingData,
+    ListingVariables
+  >(LISTING_QUERY, {
+    variables: {
+      id: match.params.id,
+      bookingsPage,
+      limit: PAGE_LIMIT,
+    },
+  });
 
   if (loading) {
     return (
@@ -67,8 +66,17 @@ export const Listing = ({
   }
 
   const listing = data ? data.listing : null;
-  // const listingBookings = listing ? listing.bookings : null;
-  const listingBookings = mockListingBookings;
+  const listingBookings = listing ? listing.bookings : null;
+
+  const clearBookingData = () => {
+    setModalVisible(false);
+    setCheckInDate(null);
+    setCheckOutDate(null);
+  };
+
+  const handleListingRefetch = async () => {
+    await refetch();
+  };
 
   const listingDetailsElement = listing ? (
     <ListingDetials listing={listing} />
@@ -100,11 +108,14 @@ export const Listing = ({
   const listingCreateBookingModalElement =
     listing && checkInDate && checkOutDate ? (
       <ListingCreateBookingModal
+        id={listing.id}
         price={listing.price}
         checkInDate={checkInDate}
         checkOutDate={checkOutDate}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        clearBookingData={clearBookingData}
+        handleListingRefetch={handleListingRefetch}
       />
     ) : null;
 
