@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { Affix, Layout, List, Typography } from "antd";
-import { RouteComponentProps } from "react-router";
+import { useParams } from "react-router";
 import { ErrorBanner, ListingCard } from "../../lib/components";
 import { ListingsFilter } from "../../lib/graphql/globalTypes";
 import { LISTINGS_QUERY } from "../../lib/graphql/queries";
@@ -25,22 +25,23 @@ interface MatchParams {
   location: string;
 }
 
-export const Listings = ({ match }: RouteComponentProps<MatchParams>) => {
+export const Listings = () => {
   const [filter, setFilter] = useState(ListingsFilter.PRICE_LOW_TO_HIGH);
   const [page, setPage] = useState(1);
-  const locationRef = useRef(match.params.location);
+  const { location } = useParams<MatchParams>();
+  const locationRef = useRef(location);
 
   useEffect(() => {
     setPage(1);
-    locationRef.current = match.params.location;
-  }, [match.params.location]);
+    locationRef.current = location;
+  }, [location]);
 
   const { loading, data, error } = useQuery<ListingsData, ListingsVariables>(
     LISTINGS_QUERY,
     {
-      skip: locationRef.current !== match.params.location && page !== 1,
+      skip: locationRef.current !== location && page !== 1,
       variables: {
-        location: match.params.location,
+        location,
         filter,
         limit: PAGE_LIMIT,
         page,

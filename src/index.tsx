@@ -101,6 +101,7 @@ const App = () => {
     <ErrorBanner description="We were not able to verify your user, please log in again." />
   ) : null;
 
+  // TODO: Remove the render-props when you are bored
   return (
     <Router>
       <Layout id="app">

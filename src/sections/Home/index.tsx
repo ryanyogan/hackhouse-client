@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Layout, Row, Typography } from "antd";
 import { HomeHero, HomeListings, HomeListingsSkeleton } from "./components";
-import { RouteComponentProps } from "react-router";
+import { useHistory } from "react-router";
 import { displayErrorMessage } from "../../lib/utils";
 import { Link } from "react-router-dom";
 import {
@@ -23,7 +23,8 @@ const { Title, Paragraph } = Typography;
 const PAGE_LIMIT = 4;
 const PAGE_NUMBER = 1;
 
-export const Home = ({ history }: RouteComponentProps) => {
+export const Home = () => {
+  const history = useHistory();
   const { loading, data } = useQuery<ListingsData, ListingsVariables>(
     LISTINGS_QUERY,
     {

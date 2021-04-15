@@ -5,7 +5,7 @@ import {
   Listing as ListingData,
   ListingVariables,
 } from "../../lib/graphql/queries/Listing/__generated__/Listing";
-import { RouteComponentProps } from "react-router";
+import { useParams } from "react-router";
 import { Col, Layout, Row } from "antd";
 import { ErrorBanner, PageSkeleton } from "../../lib/components";
 import {
@@ -29,21 +29,19 @@ interface Props {
 const { Content } = Layout;
 const PAGE_LIMIT = 3;
 
-export const Listing = ({
-  match,
-  viewer,
-}: Props & RouteComponentProps<MatchParams>) => {
+export const Listing = ({ viewer }: Props) => {
   const [bookingsPage, setBookingsPage] = useState(1);
   const [checkInDate, setCheckInDate] = useState<Moment | null>(null);
   const [checkOutDate, setCheckOutDate] = useState<Moment | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const { id } = useParams<MatchParams>();
 
   const { loading, data, error, refetch } = useQuery<
     ListingData,
     ListingVariables
   >(LISTING_QUERY, {
     variables: {
-      id: match.params.id,
+      id,
       bookingsPage,
       limit: PAGE_LIMIT,
     },
