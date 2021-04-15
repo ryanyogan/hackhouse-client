@@ -16,6 +16,7 @@ import {
 } from "../../lib/utils";
 import { ErrorBanner } from "../../lib/components";
 import { Redirect } from "react-router";
+import { useScrollToTop } from "../../lib/hooks";
 
 const { Content } = Layout;
 const { Text, Title } = Typography;
@@ -51,6 +52,8 @@ export const LogIn = ({ setViewer }: Props) => {
       });
     }
   }, []);
+
+  useScrollToTop();
 
   const handleAuthorize = async () => {
     try {

@@ -10,6 +10,7 @@ import { Col, Layout, Row } from "antd";
 import { UserBookings, UserListings, UserProfile } from "./components";
 import { Viewer } from "../../lib/types";
 import { ErrorBanner, PageSkeleton } from "../../lib/components";
+import { useScrollToTop } from "../../lib/hooks";
 
 const { Content } = Layout;
 
@@ -43,6 +44,8 @@ export const User = ({
       fetchPolicy: "cache-and-network",
     }
   );
+
+  useScrollToTop();
 
   if (loading) {
     return (

@@ -16,6 +16,7 @@ import {
 } from "./components";
 import { Moment } from "moment";
 import { Viewer } from "../../lib/types";
+import { useScrollToTop } from "../../lib/hooks";
 
 interface MatchParams {
   id: string;
@@ -47,6 +48,8 @@ export const Listing = ({
       limit: PAGE_LIMIT,
     },
   });
+
+  useScrollToTop();
 
   if (loading) {
     return (

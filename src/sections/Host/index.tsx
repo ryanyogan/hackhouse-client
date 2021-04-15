@@ -26,6 +26,7 @@ import {
 } from "../../lib/graphql/mutations/HostListing/__generated__/HostListing";
 import { useMutation } from "@apollo/client";
 import { HOST_LISTING } from "../../lib/graphql/mutations";
+import { useScrollToTop } from "../../lib/hooks";
 
 const { Content } = Layout;
 const { Text, Title } = Typography;
@@ -86,6 +87,8 @@ export const Host = ({ viewer, form }: Props & FormComponentProps) => {
       );
     },
   });
+
+  useScrollToTop();
 
   const { getFieldDecorator } = form;
 

@@ -15,6 +15,7 @@ import cancunImage from "./assets/cancun.jpeg";
 import { useQuery } from "@apollo/client";
 import { LISTINGS_QUERY } from "../../lib/graphql/queries";
 import { ListingsFilter } from "../../lib/graphql/globalTypes";
+import { useScrollToTop } from "../../lib/hooks";
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;
@@ -34,6 +35,8 @@ export const Home = ({ history }: RouteComponentProps) => {
       fetchPolicy: "cache-and-network",
     }
   );
+
+  useScrollToTop();
 
   const onSearch = (value: string) => {
     const trimmedValue = value.trim();
